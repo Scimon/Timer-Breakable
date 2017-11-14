@@ -10,7 +10,7 @@ SYNOPSIS
 
     use Timer::Breakable;
 
-    my $timer = Timer::Breakable.new().start( 10, { say "Times up" } );
+    my $timer = Timer::Breakable.start( 10, { say "Times up" } );
     ... Stuff occurs ...
     $timer.break if $variable-from-stuff;
 
@@ -33,7 +33,7 @@ PUBLIC METHODS
 
 ### start( $time where * > 0, &block )
 
-Start the timer. Expects the time to run and the block to run on completion.
+Factory method to start the timer. Expects the time to run and the block to run on completion.
 
 ### stop()
 

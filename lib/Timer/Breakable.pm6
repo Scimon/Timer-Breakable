@@ -1,5 +1,5 @@
 use v6.c;
-unit class Timer::Breakable:ver<0.0.2>:auth<Simon Proctor "simon.proctor@gmail.com">;
+unit class Timer::Breakable:ver<0.1.0>:auth<Simon Proctor "simon.proctor@gmail.com">;
 
 =begin pod
 
@@ -13,7 +13,7 @@ Timer::Breakable - Timed block calls that can be broken externally.
 
 use Timer::Breakable;
 
-my $timer = Timer::Breakable.new().start( 10, { say "Times up" } );
+my $timer = Timer::Breakable.start( 10, { say "Times up" } );
 ... Stuff occurs ...
 $timer.break if $variable-from-stuff;
 
@@ -43,11 +43,17 @@ has $!vow;
 
 =head3 start( $time where * > 0, &block )
 
-Start the timer. Expects the time to run and the block to run on completion.
+Factory method to start the timer. Expects the time to run and the block to run on completion.
 
 =end pod
 
-method start( $time where * > 0, &block ) {
+method start( Timer::Breakable:U: $time where * > 0, &block ) {
+    my $timer = self.bless();
+    $timer!init( $time, &block );
+    return $timer;
+}
+
+method !init( $time where * > 0, &block ) {
     Promise.in($time).then(
         {
             try {
@@ -109,7 +115,7 @@ method result() {
 
 =head1 NOTES
 
-This is a first draft of this functionality. The API (especially object creation) is subject to change.
+Version 0.1.0 updated the object creation to use start as a factory method.
 
 =head1 AUTHOR
 
