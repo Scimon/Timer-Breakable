@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Scimon/Timer-Breakable.svg?branch=master)](https://travis-ci.org/Scimon/Timer-Breakable)
+
 NAME
 ====
 
@@ -6,7 +8,7 @@ Timer::Breakable - blah blah blah
 SYNOPSIS
 ========
 
-    use Timer::Breakable;
+use Timer::Breakable;
 
 DESCRIPTION
 ===========
