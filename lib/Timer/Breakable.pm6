@@ -65,7 +65,6 @@ method start( $time where * > 0, &block ) {
 method !kill( :$keep = True, :&block = sub{} ) {
     return if atomic-fetch-inc( $!lock ) > 0;
     $keep ?? $!vow.keep( &block() ) !! $!vow.break( Nil );
-    #$keep ?? $.promise.keep( &block() ) !! $.promise.break();
 }
 
 =begin pod
