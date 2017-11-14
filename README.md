@@ -50,7 +50,7 @@ As per Promise.result()
 NOTES
 =====
 
-This is a first draft of this functionality. The API (especially object creation) is subject to change.
+Version 0.1.0 updated the object creation to use start as a factory method.
 
 AUTHOR
 ======
