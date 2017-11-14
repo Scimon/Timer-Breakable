@@ -1,5 +1,5 @@
 use v6.c;
-unit class Timer::Breakable:ver<0.0.1>:auth<Simon Proctor "simon.proctor@gmail.com">;
+unit class Timer::Breakable:ver<0.0.2>:auth<Simon Proctor "simon.proctor@gmail.com">;
 
 =begin pod
 
