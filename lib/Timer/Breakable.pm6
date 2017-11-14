@@ -5,20 +5,47 @@ unit class Timer::Breakable:ver<0.0.1>:auth<Simon Proctor "simon.proctor@gmail.c
 
 =head1 NAME
 
-Timer::Breakable - blah blah blah
+Timer::Breakable - Timed block calls that can be broken externally.
 
 =head1 SYNOPSIS
 
+=begin code
+
 use Timer::Breakable;
+
+my $timer = Timer::Breakable.new().start( 10, { say "Times up" } );
+... Stuff occurs ...
+$timer.break if $variable-from-stuff;
+
+say $timer.result if $timer.status ~~ Kept;
+
+=end code
 
 =head1 DESCRIPTION
 
-Timer::Breakable is ...
+Timer::Breakable is wrapper aroud the standard Promise.in() functionality that lets you stop the timer without running it's block.
+
+=head2 PUBLIC ATTRIBUTES
+
+=head3 promise
+
+A vowed promise that can be handed to await, anyof or allof. Note that the promises status and results can be accessed from the Timer::Breakable object directly.
 
 =end pod
 
-has Promise $.flag = Promise.new();
+has Promise $.promise = Promise.new();
 has atomicint $!lock = 0;
+has $!vow;
+
+=begin pod
+
+=head2 PUBLIC METHODS
+
+=head3 start( $time where * > 0, &block )
+
+Start the timer. Expects the time to run and the block to run on completion.
+
+=end pod
 
 method start( $time where * > 0, &block ) {
     Promise.in($time).then(
@@ -31,28 +58,59 @@ method start( $time where * > 0, &block ) {
             }
         }
     );
+    $!vow = $.promise.vow;
     return self;
 }
 
 method !kill( :$keep = True, :&block = sub{} ) {
     return if atomic-fetch-inc( $!lock ) > 0;
-    $keep ?? $!flag.keep( &block() ) !! $!flag.break();
+    $keep ?? $!vow.keep( &block() ) !! $!vow.break( Nil );
+    #$keep ?? $.promise.keep( &block() ) !! $.promise.break();
 }
+
+=begin pod
+
+=head3 stop()
+
+Stops the timer. Note that the timer itself will still run to completion but the given block will not be run.
+
+=end pod
 
 method stop() {
     self!kill( keep => False );
 }
 
+=begin pod
 
-method result() {
-    return $.flag.result;
-}
+=head3 status()
+
+As per Promise.status()
+
+=end pod
+
 
 method status() {
-    return $.flag.status;
+    return $.promise.status;
 }
 
 =begin pod
+
+=head3 result()
+
+As per Promise.result()
+
+=end pod
+
+
+method result() {
+    return $.promise.result;
+}
+
+=begin pod
+
+=head1 NOTES
+
+This is a first draft of this functionality. The API (especially object creation) is subject to change.
 
 =head1 AUTHOR
 

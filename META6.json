@@ -4,7 +4,7 @@
   ],
   "build-depends" : [ ],
   "depends" : [ ],
-  "description" : "blah blah blah",
+  "description" : "Timed block calls that can be broken externally.",
   "license" : "Artistic-2.0",
   "name" : "Timer::Breakable",
   "perl" : "6.c",
