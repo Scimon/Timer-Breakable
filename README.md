@@ -12,7 +12,7 @@ SYNOPSIS
 
     my $timer = Timer::Breakable.start( 10, { say "Times up" } );
     ... Stuff occurs ...
-    $timer.break if $variable-from-stuff;
+    $timer.stop if $variable-from-stuff;
 
     say $timer.result if $timer.status ~~ Kept;
 

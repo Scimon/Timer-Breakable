@@ -1,5 +1,5 @@
 use v6.c;
-unit class Timer::Breakable:ver<0.1.0>:auth<Simon Proctor "simon.proctor@gmail.com">;
+unit class Timer::Breakable:ver<0.1.1>:auth<Simon Proctor "simon.proctor@gmail.com">;
 
 =begin pod
 
@@ -15,7 +15,7 @@ use Timer::Breakable;
 
 my $timer = Timer::Breakable.start( 10, { say "Times up" } );
 ... Stuff occurs ...
-$timer.break if $variable-from-stuff;
+$timer.stop if $variable-from-stuff;
 
 say $timer.result if $timer.status ~~ Kept;
 
